@@ -12,7 +12,9 @@ const ui = {
   intention: el('intention'),
   counter: el('counter'),
   voices: el('voices'),
+  voiceNote: el('voice-note'),
   ambiences: el('ambiences'),
+  ambienceNote: el('ambience-note'),
   start: el('start'),
   error: el('error'),
   player: el('player'),
@@ -45,21 +47,25 @@ ui.intention.addEventListener('input', () => {
   ui.counter.textContent = String(ui.intention.value.length);
 });
 
-function renderPills(container, items, onPick, selectedId) {
+/** A hairline row of choices: names inline, and one muted line describing whichever
+ *  is currently selected. Beats three boxes of permanently-visible small print. */
+function renderOptions(container, note, items, onPick, selected) {
+  const select = (item, button) => {
+    for (const sibling of container.children) sibling.setAttribute('aria-pressed', 'false');
+    button.setAttribute('aria-pressed', 'true');
+    note.textContent = item.description;
+    onPick(item);
+  };
+
   container.replaceChildren(
     ...items.map((item) => {
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = 'pill';
-      button.setAttribute('aria-pressed', String(item.id === selectedId));
-      button.innerHTML = `<span class="pill-name"></span><span class="pill-note"></span>`;
-      button.querySelector('.pill-name').textContent = item.name;
-      button.querySelector('.pill-note').textContent = item.description;
-      button.addEventListener('click', () => {
-        onPick(item);
-        for (const sibling of container.children) sibling.setAttribute('aria-pressed', 'false');
-        button.setAttribute('aria-pressed', 'true');
-      });
+      button.className = 'option';
+      button.textContent = item.name;
+      button.setAttribute('aria-pressed', String(item.id === selected.id));
+      button.addEventListener('click', () => select(item, button));
+      if (item.id === selected.id) note.textContent = item.description;
       return button;
     }),
   );
@@ -72,8 +78,8 @@ async function loadOptions() {
   chosenVoice = options.voices[0];
   chosenAmbience = options.ambiences[0];
 
-  renderPills(ui.voices, options.voices, (v) => (chosenVoice = v), chosenVoice.id);
-  renderPills(ui.ambiences, options.ambiences, (a) => pickAmbience(a), chosenAmbience.id);
+  renderOptions(ui.voices, ui.voiceNote, options.voices, (v) => (chosenVoice = v), chosenVoice);
+  renderOptions(ui.ambiences, ui.ambienceNote, options.ambiences, pickAmbience, chosenAmbience);
 }
 
 function pickAmbience(ambience) {
@@ -234,12 +240,13 @@ async function run(script, context) {
     await speakLine(context, clip, script.lines[i]);
     if (!session?.playing) return;
 
-    const pauseSeconds = script.lines[i].pauseMs / 1000;
-    if (pauseSeconds > 2.5) {
-      ui.spoken.classList.add('resting');
-      ui.spoken.textContent = 'just breathe';
-    }
-    await waitOnClock(context, pauseSeconds);
+    // Let the words recede through the silence rather than swapping in a competing
+    // instruction. They stay on screen, just quieter, until the next line arrives —
+    // a nine-second pause should feel like room, not like a hang.
+    ui.spoken.classList.add('receding');
+    for (const span of ui.spoken.querySelectorAll('.said')) span.classList.remove('said');
+    await waitOnClock(context, script.lines[i].pauseMs / 1000);
+    ui.spoken.classList.remove('receding');
   }
 
   if (!session?.playing) return;
@@ -263,7 +270,7 @@ async function begin() {
 
   ui.error.hidden = true;
   ui.start.disabled = true;
-  ui.start.textContent = 'Writing…';
+  ui.start.textContent = 'Writing';
 
   // The AudioContext and the ambience both have to start inside the click, or
   // iOS will refuse to play anything later.
@@ -277,7 +284,7 @@ async function begin() {
 
   ui.compose.hidden = true;
   ui.player.hidden = false;
-  ui.status.textContent = 'Writing your meditation…';
+  ui.status.textContent = 'Writing your meditation';
   ui.spoken.classList.add('resting');
   ui.spoken.textContent = 'settle in';
   ui.bar.style.width = '0';
@@ -306,7 +313,7 @@ function stop() {
   ui.player.hidden = true;
   ui.compose.hidden = false;
   ui.start.disabled = false;
-  ui.start.textContent = 'Make my two minutes';
+  ui.start.textContent = 'Start the meditation';
   ui.toggle.disabled = true;
   ui.toggle.textContent = 'Pause';
 }

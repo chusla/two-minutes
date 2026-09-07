@@ -1,261 +1,302 @@
-:root {
-  --linen: #f4f1ec;
-  --panel: #fbf9f6;
-  --ink: #17170f;
-  --ink-soft: #5d5a50;
-  --ink-faint: #948f83;
-  --line: #e2ddd3;
-  --accent: #2f6f5e;
-  --accent-ink: #ffffff;
-  --warn: #8a3a2c;
-  --radius: 14px;
-}
+/* Whitespace design tokens.
+ *
+ * Values transcribed from whitespace-native via the landing repo's
+ * design/tokens.css. This page is committed to dark — like the Whitespace
+ * landing page, share and invite pages — so it carries the dark set only and
+ * stamps data-theme="dark" on <html>.
+ *
+ * The rarity rule: a pillar's hue appears only where that pillar does. A
+ * composer is Begin's territory, so the one colour on this page is Begin's
+ * fire. Nothing else gets tinted. */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --linen: #14140f;
-    --panel: #1c1c16;
-    --ink: #f0ede5;
-    --ink-soft: #a9a498;
-    --ink-faint: #6f6b60;
-    --line: #2c2b23;
-    --accent: #7fc0aa;
-    --accent-ink: #10241d;
-    --warn: #e0917f;
-  }
+:root {
+  --ws-bg: #0a0a12;
+  --ws-bg-elevated: #1a1b24;
+  --ws-bg-sunken: #0d0d0f;
+  --ws-text: #ececf2;
+  --ws-text-2: #cfd1d8;
+  --ws-text-3: #8e91a0;
+  --ws-begin: #e0a94f;
+  --ws-begin-rgb: 224, 169, 79;
+
+  /* Shape doctrine */
+  --ws-cta-radius: 999px;
+  --ws-cta-min-height: 48px;
+  --ws-cta-fill: rgba(255, 255, 255, 0.95);
+  --ws-cta-label: #0b0c12;
+  --ws-eyebrow-min: 11.5px;
+
+  --ws-hairline: rgba(236, 236, 242, 0.09);
+  --ws-card-radius: 16px;
+
+  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-voice: "Crimson Pro", Georgia, serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 body {
   margin: 0;
-  background: var(--linen);
-  color: var(--ink);
-  font: 16px/1.6 ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--ws-bg);
+  color: var(--ws-text);
+  font: 16px/1.6 var(--font-ui);
   -webkit-font-smoothing: antialiased;
 }
 
 main {
-  max-width: 40rem;
+  max-width: 34rem;
   margin: 0 auto;
-  padding: 3.5rem 1.25rem 4rem;
+  padding: 4rem 1.25rem 3rem;
 }
 
 /* ─────────── Masthead ─────────── */
 
 .masthead {
-  margin-bottom: 2rem;
+  margin-bottom: 2.25rem;
 }
 
 h1 {
-  margin: 0 0 0.4rem;
-  font-size: clamp(2rem, 7vw, 2.75rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem;
+  font-family: var(--font-voice);
+  font-size: clamp(2.25rem, 8vw, 3rem);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
 }
 
 .standfirst {
   margin: 0;
-  max-width: 30rem;
-  color: var(--ink-soft);
-  font-size: 1.05rem;
+  max-width: 28rem;
+  color: var(--ws-text-2);
+  font-size: 1.02rem;
+  line-height: 1.55;
 }
 
-/* ─────────── Panels ─────────── */
+/* ─────────── The composer ─────────── */
+/* One card carries the radius. The input sits flush inside it with no radius of
+ * its own; the choices are hairline-divided rows beneath. */
 
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1.5rem;
+.composer {
+  background: var(--ws-bg-elevated);
+  border-radius: var(--ws-card-radius);
+  overflow: hidden;
 }
 
-.field-label {
+.composer textarea {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-
-textarea {
   width: 100%;
-  padding: 0.85rem;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--linen);
-  color: var(--ink);
-  font: inherit;
-  resize: vertical;
+  padding: 1.25rem 1.25rem 0.5rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ws-text);
+  font: 300 1.15rem/1.5 var(--font-voice);
+  resize: none;
 }
 
-textarea:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+.composer textarea::placeholder {
+  color: var(--ws-text-3);
+}
+
+.composer textarea:focus {
+  outline: none;
 }
 
 .counter {
-  margin: 0.4rem 0 0;
+  margin: 0;
+  padding: 0 1.25rem 1rem;
   text-align: right;
-  font-size: 0.8rem;
-  color: var(--ink-faint);
+  font-size: var(--ws-eyebrow-min);
+  color: var(--ws-text-3);
   font-variant-numeric: tabular-nums;
 }
 
-/* ─────────── Choices ─────────── */
-
-.choices {
-  margin: 1.5rem 0 0;
-  padding: 0;
-  border: 0;
+.row {
+  padding: 0.9rem 1.25rem;
+  border-top: 1px solid var(--ws-hairline);
 }
 
-.choices legend {
-  padding: 0;
-  margin-bottom: 0.6rem;
-  font-weight: 500;
+.row-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
 }
 
-.pills {
+.row-label {
+  flex: 0 0 5rem;
+  font-size: 0.82rem;
+  color: var(--ws-text-3);
+}
+
+.row-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 1.1rem;
 }
 
-.pill {
-  flex: 1 1 8rem;
-  padding: 0.6rem 0.85rem;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--linen);
-  color: var(--ink);
+.option {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ws-text-3);
   font: inherit;
-  text-align: left;
+  font-size: 0.95rem;
   cursor: pointer;
 }
 
-.pill:hover {
-  border-color: var(--ink-faint);
+.option:hover {
+  color: var(--ws-text-2);
 }
 
-.pill[aria-pressed="true"] {
-  border-color: var(--accent);
-  box-shadow: inset 0 0 0 1px var(--accent);
+.option[aria-pressed="true"] {
+  color: var(--ws-begin);
 }
 
-.pill .pill-name {
-  display: block;
-  font-weight: 500;
-}
-
-.pill .pill-note {
-  display: block;
-  margin-top: 0.15rem;
-  font-size: 0.78rem;
-  line-height: 1.35;
-  color: var(--ink-faint);
+.row-note {
+  margin: 0.4rem 0 0 6rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--ws-text-3);
 }
 
 /* ─────────── Buttons ─────────── */
 
-.primary {
+.cta {
+  display: block;
   width: 100%;
-  margin-top: 1.75rem;
-  padding: 0.9rem 1rem;
+  margin-top: 1.25rem;
+  min-height: var(--ws-cta-min-height);
+  padding: 0.85rem 1rem;
   border: 0;
-  border-radius: 10px;
-  background: var(--accent);
-  color: var(--accent-ink);
-  font: inherit;
-  font-weight: 500;
+  border-radius: var(--ws-cta-radius);
+  background: var(--ws-cta-fill);
+  color: var(--ws-cta-label);
+  font: 500 1rem var(--font-ui);
   cursor: pointer;
 }
 
-.primary:disabled {
-  opacity: 0.55;
+.cta:disabled {
+  opacity: 0.45;
   cursor: default;
 }
 
-.ghost {
-  padding: 0.55rem 1.1rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
+.quiet {
+  padding: 0.5rem 1.15rem;
+  border: 1px solid var(--ws-hairline);
+  border-radius: var(--ws-cta-radius);
   background: transparent;
-  color: var(--ink);
+  color: var(--ws-text-2);
   font: inherit;
+  font-size: 0.9rem;
   cursor: pointer;
 }
 
-.ghost:disabled {
-  opacity: 0.4;
+.quiet:hover:not(:disabled) {
+  color: var(--ws-text);
+  border-color: rgba(236, 236, 242, 0.2);
+}
+
+.quiet:disabled {
+  opacity: 0.35;
   cursor: default;
 }
 
 .error {
   margin: 1rem 0 0;
-  color: var(--warn);
+  color: var(--ws-begin);
+  font-size: 0.92rem;
 }
 
 /* ─────────── Player ─────────── */
 
 .player {
+  background: var(--ws-bg-elevated);
+  border-radius: var(--ws-card-radius);
+  padding: 1.75rem 1.5rem 1.5rem;
   text-align: center;
 }
 
-.status {
+.eyebrow {
   margin: 0;
-  font-size: 0.85rem;
-  letter-spacing: 0.06em;
+  font-size: var(--ws-eyebrow-min);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--ws-text-3);
 }
 
 .title {
-  margin: 0.5rem 0 0;
-  font-size: 1.25rem;
-  font-weight: 500;
+  margin: 0.6rem 0 0;
+  font-family: var(--font-voice);
+  font-size: 1.4rem;
+  font-weight: 300;
 }
 
 .stage {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 9rem;
-  padding: 1.5rem 0;
+  min-height: 10rem;
+  padding: 1.75rem 0;
 }
 
 .spoken {
   margin: 0;
-  font-size: clamp(1.15rem, 4.5vw, 1.5rem);
-  line-height: 1.55;
-  color: var(--ink-faint);
-  transition: color 600ms ease;
+  font-family: var(--font-voice);
+  font-size: clamp(1.35rem, 5.5vw, 1.75rem);
+  font-weight: 300;
+  line-height: 1.5;
+  color: rgba(236, 236, 242, 0.24);
 }
 
-/* A word lights up as the voice reaches it, using ElevenLabs character timings. */
+/* Each word lifts as the voice reaches it, on the ElevenLabs character timings. */
+.spoken span {
+  transition: color 220ms ease;
+}
+
 .spoken .said {
-  color: var(--ink);
+  color: var(--ws-text);
 }
 
+/* Words light up quickly and let go slowly. */
+.spoken.receding span {
+  transition: color 1400ms ease;
+}
+
+/* Between lines there is nothing to read. Say so quietly rather than leaving the
+ * last sentence hanging on screen through eight seconds of silence. */
 .spoken.resting {
-  color: var(--ink-faint);
-  font-size: 1rem;
-  letter-spacing: 0.08em;
+  font-family: var(--font-ui);
+  font-size: var(--ws-eyebrow-min);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: var(--ws-text-3);
 }
 
 .progress {
-  height: 3px;
+  height: 2px;
   border-radius: 999px;
-  background: var(--line);
+  background: rgba(236, 236, 242, 0.09);
   overflow: hidden;
 }
 
 .bar {
   height: 100%;
   width: 0;
-  background: var(--accent);
-  transition: width 400ms linear;
+  background: var(--ws-begin);
+  transition: width 600ms linear;
 }
 
 .controls {
@@ -268,19 +309,43 @@ textarea:focus-visible {
 /* ─────────── Colophon ─────────── */
 
 .colophon {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   font-size: 0.85rem;
-  color: var(--ink-faint);
+  line-height: 1.6;
+  color: var(--ws-text-3);
   text-align: center;
 }
 
 .colophon p {
-  margin: 0.35rem 0;
+  margin: 0.4rem 0;
 }
 
 a {
-  color: inherit;
-  text-underline-offset: 2px;
+  color: var(--ws-text-2);
+  text-decoration-color: rgba(236, 236, 242, 0.3);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--ws-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ws-begin);
+  outline-offset: 2px;
+}
+
+@media (max-width: 30rem) {
+  .row-head {
+    display: block;
+  }
+  .row-label {
+    display: block;
+    margin-bottom: 0.45rem;
+  }
+  .row-note {
+    margin-left: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

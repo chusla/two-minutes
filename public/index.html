@@ -1,12 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
     <title>Two Minutes — a meditation about whatever is on your mind</title>
     <meta
       name="description"
       content="Say what's on your mind. Two Minutes writes a two-minute guided meditation about it and speaks it aloud with ElevenLabs."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@200;300;400&family=Inter:wght@300;400;500&display=swap"
     />
     <link rel="stylesheet" href="/styles.css" />
   </head>
@@ -15,40 +22,50 @@
       <header class="masthead">
         <h1>Two Minutes</h1>
         <p class="standfirst">
-          Say what's on your mind. You get a two-minute meditation about that, spoken
-          aloud, with the silence left in.
+          Say what's on your mind. Two minutes comes back, spoken aloud, with the
+          silence left in.
         </p>
       </header>
 
-      <!-- ─────────── Compose ─────────── -->
-      <section id="compose" class="panel">
-        <label class="field-label" for="intention">What's on your mind?</label>
-        <textarea
-          id="intention"
-          rows="3"
-          maxlength="220"
-          placeholder="I keep checking my phone the second I get into bed"
-          autocomplete="off"
-        ></textarea>
-        <p class="counter"><span id="counter">0</span>/220</p>
+      <!-- ─────────── Composer ─────────── -->
+      <!-- One card carries the radius; the input sits flush inside it; the
+           choices are hairline-divided rows beneath. -->
+      <section id="compose">
+        <div class="composer">
+          <label class="visually-hidden" for="intention">What's on your mind?</label>
+          <textarea
+            id="intention"
+            rows="3"
+            maxlength="220"
+            placeholder="What's on your mind?"
+            autocomplete="off"
+          ></textarea>
+          <p class="counter"><span id="counter">0</span>/220</p>
 
-        <fieldset class="choices">
-          <legend>Voice</legend>
-          <div id="voices" class="pills"></div>
-        </fieldset>
+          <div class="row">
+            <div class="row-head">
+              <span class="row-label" id="voice-label">Voice</span>
+              <div id="voices" class="row-options" role="group" aria-labelledby="voice-label"></div>
+            </div>
+            <p id="voice-note" class="row-note"></p>
+          </div>
 
-        <fieldset class="choices">
-          <legend>Ambience</legend>
-          <div id="ambiences" class="pills"></div>
-        </fieldset>
+          <div class="row">
+            <div class="row-head">
+              <span class="row-label" id="ambience-label">Ambience</span>
+              <div id="ambiences" class="row-options" role="group" aria-labelledby="ambience-label"></div>
+            </div>
+            <p id="ambience-note" class="row-note"></p>
+          </div>
+        </div>
 
-        <button id="start" class="primary" type="button">Make my two minutes</button>
+        <button id="start" class="cta" type="button">Start the meditation</button>
         <p id="error" class="error" hidden></p>
       </section>
 
       <!-- ─────────── Player ─────────── -->
-      <section id="player" class="panel player" hidden>
-        <p id="status" class="status">Writing your meditation…</p>
+      <section id="player" class="player" hidden>
+        <p id="status" class="eyebrow">Writing your meditation</p>
         <h2 id="title" class="title"></h2>
 
         <div class="stage">
@@ -58,19 +75,19 @@
         <div class="progress"><div id="bar" class="bar"></div></div>
 
         <div class="controls">
-          <button id="toggle" class="ghost" type="button" disabled>Pause</button>
-          <button id="stop" class="ghost" type="button">Start over</button>
+          <button id="toggle" class="quiet" type="button" disabled>Pause</button>
+          <button id="stop" class="quiet" type="button">Start over</button>
         </div>
       </section>
 
       <footer class="colophon">
         <p>
-          Open source, free to use, no sign-up. The whole prompt is
+          Open source and free to use, with no sign-up. The prompt that writes these is
           <a href="https://github.com/chusla/two-minutes/blob/main/lib/prompt.js">one readable file</a>.
         </p>
         <p>
           Voice by <a href="https://elevenlabs.io">ElevenLabs</a> · Words by
-          <a href="https://claude.com">Claude</a> · Ambience from
+          <a href="https://claude.com">Claude</a> · A small demo from
           <a href="https://trywhitespace.com">Whitespace</a> ·
           <a href="https://github.com/chusla/two-minutes">Source</a>
         </p>
