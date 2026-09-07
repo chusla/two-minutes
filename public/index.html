@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Two Minutes — a meditation about whatever is on your mind</title>
+    <meta
+      name="description"
+      content="Say what's on your mind. Two Minutes writes a two-minute guided meditation about it and speaks it aloud with ElevenLabs."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <header class="masthead">
+        <h1>Two Minutes</h1>
+        <p class="standfirst">
+          Say what's on your mind. You get a two-minute meditation about that, spoken
+          aloud, with the silence left in.
+        </p>
+      </header>
+
+      <!-- ─────────── Compose ─────────── -->
+      <section id="compose" class="panel">
+        <label class="field-label" for="intention">What's on your mind?</label>
+        <textarea
+          id="intention"
+          rows="3"
+          maxlength="220"
+          placeholder="I keep checking my phone the second I get into bed"
+          autocomplete="off"
+        ></textarea>
+        <p class="counter"><span id="counter">0</span>/220</p>
+
+        <fieldset class="choices">
+          <legend>Voice</legend>
+          <div id="voices" class="pills"></div>
+        </fieldset>
+
+        <fieldset class="choices">
+          <legend>Ambience</legend>
+          <div id="ambiences" class="pills"></div>
+        </fieldset>
+
+        <button id="start" class="primary" type="button">Make my two minutes</button>
+        <p id="error" class="error" hidden></p>
+      </section>
+
+      <!-- ─────────── Player ─────────── -->
+      <section id="player" class="panel player" hidden>
+        <p id="status" class="status">Writing your meditation…</p>
+        <h2 id="title" class="title"></h2>
+
+        <div class="stage">
+          <p id="spoken" class="spoken" aria-live="polite"></p>
+        </div>
+
+        <div class="progress"><div id="bar" class="bar"></div></div>
+
+        <div class="controls">
+          <button id="toggle" class="ghost" type="button" disabled>Pause</button>
+          <button id="stop" class="ghost" type="button">Start over</button>
+        </div>
+      </section>
+
+      <footer class="colophon">
+        <p>
+          Open source, free to use, no sign-up. The whole prompt is
+          <a href="https://github.com/chusla/two-minutes/blob/main/lib/prompt.js">one readable file</a>.
+        </p>
+        <p>
+          Voice by <a href="https://elevenlabs.io">ElevenLabs</a> · Words by
+          <a href="https://claude.com">Claude</a> · Ambience from
+          <a href="https://trywhitespace.com">Whitespace</a> ·
+          <a href="https://github.com/chusla/two-minutes">Source</a>
+        </p>
+      </footer>
+    </main>
+
+    <audio id="ambience" loop preload="none"></audio>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

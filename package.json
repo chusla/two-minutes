@@ -1,0 +1,22 @@
+{
+  "name": "two-minutes",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Say what's on your mind, get a two-minute guided meditation spoken aloud with ElevenLabs.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chusla/two-minutes.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel deploy --prod"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.72.0"
+  }
+}
