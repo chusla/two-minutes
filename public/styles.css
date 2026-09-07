@@ -136,15 +136,18 @@ h1 {
 }
 
 .row-label {
-  flex: 0 0 5rem;
+  flex: 0 0 4.5rem;
   font-size: 0.82rem;
   color: var(--ws-text-3);
 }
 
+/* Ambience names are long enough to wrap. Keep the wrapped line tight against the
+ * first so the row still reads as one row. */
 .row-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.1rem;
+  column-gap: 1.1rem;
+  row-gap: 0.2rem;
 }
 
 .option {
@@ -166,7 +169,7 @@ h1 {
 }
 
 .row-note {
-  margin: 0.4rem 0 0 6rem;
+  margin: 0.45rem 0 0 5.5rem;
   font-size: 0.82rem;
   line-height: 1.45;
   color: var(--ws-text-3);
