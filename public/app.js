@@ -25,7 +25,12 @@ const ui = {
   ambience: el('ambience'),
 };
 
-const AMBIENCE_VOLUME = 0.26;
+const AMBIENCE_VOLUME = 0.22;
+
+// Nobody arrives the instant the audio does. Hold the first word back until the
+// ambience has been playing a while, so the meditation opens with a room rather than
+// with a voice. Writing the script usually covers most of this on its own.
+const LEAD_IN_MS = 12000;
 
 let options = { voices: [], ambiences: [] };
 let chosenVoice = null;
@@ -209,6 +214,10 @@ async function run(script, context) {
   ui.toggle.disabled = false;
   ui.status.textContent = 'Two minutes';
 
+  const waited = Date.now() - session.startedAt;
+  if (waited < LEAD_IN_MS) await waitOnClock(context, (LEAD_IN_MS - waited) / 1000);
+  if (!session?.playing) return;
+
   for (let i = 0; i < script.lines.length && session?.playing; i++) {
     let clip;
     try {
@@ -264,7 +273,7 @@ async function begin() {
   ui.ambience.play().catch(() => {});
   fadeAmbience(AMBIENCE_VOLUME, 3000);
 
-  session = { playing: true, context, source: null };
+  session = { playing: true, context, source: null, startedAt: Date.now() };
 
   ui.compose.hidden = true;
   ui.player.hidden = false;
